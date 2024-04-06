@@ -16,8 +16,8 @@ The maze is represented as a 2D NumPy array, where walls are denoted by 1 and
 paths are denoted by 0. The entry point is at the top-left corner, and the exit
 point is at the bottom-right corner.
 
-The selected path finding algorithm finds a path from the entry point to the exit point.
-The solution path is then animated on the visualized maze.
+The selected path finding algorithm finds a path from the entry point to the exit 
+point. The solution path is then animated on the visualized maze.
 
 The script accepts command-line arguments to specify the path finding algorithm
 and the dimension of the maze.
@@ -44,14 +44,14 @@ def generate_maze(dim):
     Returns:
         A 2D NumPy array representing the maze.
     """
-    # Create a grid filled with walls
+    # Create grid filled with walls
     maze = np.ones((dim * 2 + 1, dim * 2 + 1))
     
-    # Define the starting point
+    # Define starting point
     x, y = (0, 0)
     maze[2 * x + 1, 2 * y + 1] = 0
     
-    # Initialize the stack with the starting point
+    # Initialize stack with starting point
     stack = [(x, y)]
     
     while len(stack) > 0:
@@ -70,7 +70,7 @@ def generate_maze(dim):
         else:
             stack.pop()
     
-    # Create an entrance and an exit
+    # Create entrance and exit
     maze[1, 0] = 0
     maze[-2, -1] = 0
     
@@ -265,27 +265,31 @@ def animate_maze(maze, path=None, algorithm=None):
 
     Args:
         maze: A 2D NumPy array representing the maze.
-        path: A list of coordinates representing the solution path (optional).
-        algorithm: The path finding algorithm used (optional).
+        path: A list of coordinates representing the solution path.
+        algorithm: The path finding algorithm used.
     """
     # Create figure and axis
-    fig, ax = plt.subplots(figsize=(10, 10))
+    fig = plt.figure(figsize=(12, 8))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1, 3])
+    ax1 = fig.add_subplot(gs[0])
+    ax2 = fig.add_subplot(gs[1])
 
     # Set border color to white
     fig.patch.set_edgecolor('white')
     fig.patch.set_linewidth(0)
 
     # Display maze
-    ax.imshow(maze, cmap=plt.cm.binary, interpolation='nearest')
-    ax.set_xticks([])
-    ax.set_yticks([])
+    ax2.imshow(maze, cmap=plt.cm.binary, interpolation='nearest')
+    ax2.set_xticks([])
+    ax2.set_yticks([])
 
-    # Set title with algorithm name
-    if algorithm:
-        fig.text(0.5, 0.90, f"Solving maze using {algorithm.upper()} algorithm", fontsize=24, ha='center')
+    # Add text for title, algorithm, solution length, and time step
+    solving_text = ax1.text(0.1, 0.9, "Solving maze...", fontsize=14, fontweight='bold', transform=ax1.transAxes)
+    algorithm_text = ax1.text(0.1, 0.85, f"Algorithm: {algorithm.upper()}", fontsize=14, transform=ax1.transAxes)
+    solution_length_text = ax1.text(0.1, 0.8, "", fontsize=14, transform=ax1.transAxes)
+    step_text = ax1.text(0.1, 0.75, "", fontsize=14, transform=ax1.transAxes)
 
-    # Add text for displaying current step and total steps
-    step_text = fig.text(0.5, 0.07, "", fontsize=18, ha='center')
+    ax1.axis('off')
 
     # Assign colors to each algorithm
     algorithm_colors = {
@@ -300,26 +304,28 @@ def animate_maze(maze, path=None, algorithm=None):
 
     # Prepare for path animation
     if path is not None:
-        line, = ax.plot([], [], color=path_color, linewidth=2)
+        line, = ax2.plot([], [], color=path_color, linewidth=2)
 
         def init():
             line.set_data([], [])
             step_text.set_text("")
-            return line, step_text
+            solution_length_text.set_text("")
+            return line, step_text, solution_length_text
 
         def update(frame):
             x, y = path[frame]
             line.set_data(*zip(*[(p[1], p[0]) for p in path[:frame + 1]]))
-            step_text.set_text(f"Time: {frame + 1}/{len(path)}")
-            return line, step_text
+            step_text.set_text(f"Step: {frame + 1}")
+            solution_length_text.set_text(f"Solution length: {len(path)}")
+            return line, step_text, solution_length_text
 
         ani = animation.FuncAnimation(fig, update, frames=range(len(path)),
                                       init_func=init, repeat=False, interval=50, blit=False)
         plt.show()
 
     # Draw entry and exit arrows
-    ax.arrow(0, 1, .4, 0, fc='green', ec='green', head_width=0.3, head_length=0.3)
-    ax.arrow(maze.shape[1] - 1, maze.shape[0] - 2, 0.4, 0, fc='blue', ec='blue',
+    ax2.arrow(0, 1, .4, 0, fc='green', ec='green', head_width=0.3, head_length=0.3)
+    ax2.arrow(maze.shape[1] - 1, maze.shape[0] - 2, 0.4, 0, fc='blue', ec='blue',
              head_width=0.3, head_length=0.3)
 
 
