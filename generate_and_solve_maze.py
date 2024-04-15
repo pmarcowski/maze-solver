@@ -22,8 +22,8 @@ point. The solution path is then animated on the visualized maze.
 The script accepts command-line arguments to specify the path finding algorithm
 and the dimension of the maze.
 
-# This code is licensed under the MIT license found in the
-# LICENSE file in the root directory of this source tree.
+This code is licensed under the MIT license found in the
+LICENSE file in the root directory of this source tree.
 """
 
 import numpy as np
