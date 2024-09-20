@@ -1,0 +1,23 @@
+# Maze Solver Configuration
+
+# Figure size for matplotlib visualizations
+figure_size:
+  width: 12
+  height: 8
+
+# Colors for different algorithms
+algorithm_colors:
+  bfs: 'red'
+  dfs: 'blue'
+  astar: 'green'
+  dijkstra: 'orange'
+
+# Default maze dimension
+default_maze_dimension: 20
+
+# Default cycle probability
+default_cycle_probability: 0.1
+
+# Animation settings
+animation:
+  interval: 50  # milliseconds
