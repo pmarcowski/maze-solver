@@ -286,7 +286,8 @@ app.layout = html.Div([
             html.Div(
                 id="solution-info",
                 className="p-3 bg-light border",  # Bootstrap classes for styling
-                style={'textAlign': 'center', 'fontSize': '18px'}
+                style={'textAlign': 'center', 'fontSize': '18px'},
+                children="Welcome to the Maze Solver! Generate a new maze and select start and end points to find a solution."  # Default message
             )
         ], style={'padding': '0 20px'})  # Padding for message window
     ], style={'maxWidth': '800px', 'margin': '0 auto', 'fontFamily': 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif'})  # Center content
