@@ -1,24 +1,26 @@
-# Temporary / OS-specific files
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-*.egg-info/
-*.so
-.DS_Store 
-
-# Data files
-*.dat
-*.npy
+*$py.class
 
 # Virtual environments
 venv/
-env/
+.venv/
+
+# IDE and Editor directories
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
 
 # Logs
 *.log
 
-# IDE specific files 
-.vscode/
-.idea/
-
-# Jupyter notebook checkpoints
-.ipynb_checkpoints/
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
