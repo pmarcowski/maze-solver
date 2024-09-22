@@ -163,7 +163,7 @@ server = app.server
 app.layout = html.Div([
     # App title
     html.H1(
-        "Maze Solver Demonstration",
+        "Maze Solver",
         style={
             'textAlign': 'center',
             'marginBottom': '40px',
@@ -172,6 +172,49 @@ app.layout = html.Div([
             'fontFamily': 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif'
         }
     ),
+    
+    # Info modal
+    html.Div([
+        html.Div([
+            html.H2("Welcome to the Maze Solver!",
+                    style={'textAlign': 'center', 'marginBottom': '20px'}),
+            html.P(
+                "I'm Przemek, a San Diego-based researcher and data scientist with a passion for using data to make things more interesting. "
+                "This app showcases various pathfinding algorithms applied to randomly generated mazes.",
+                style={'marginBottom': '15px'}
+            ),
+            html.P(
+                "You can generate mazes of different sizes, adjust the complexity by adding cycles, "
+                "and compare the performance of different pathfinding algorithms.",
+                style={'marginBottom': '15px'}
+            ),
+            html.P([
+                "You can explore my other work ",
+                html.A("here", href="https://przemyslawmarcowski.com", target="_blank"),
+                "."
+            ], style={'marginBottom': '20px'}),
+            html.Button('Close', id='close-modal', n_clicks=0,
+                        style={'padding': '10px 20px', 'fontSize': '16px'})
+        ], style={
+            'backgroundColor': 'white',
+            'padding': '20px',
+            'borderRadius': '5px',
+            'maxWidth': '500px',
+            'margin': '100px auto',
+            'boxShadow': '0px 0px 10px rgba(0,0,0,0.1)',
+            'fontFamily': 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif'
+        })
+    ], id='modal', style={
+        'display': 'none',
+        'position': 'fixed',
+        'zIndex': '1000',
+        'left': '0',
+        'top': '0',
+        'width': '100%',
+        'height': '100%',
+        'overflow': 'auto',
+        'backgroundColor': 'rgba(0,0,0,0.4)'
+    }),
     
     # Hidden divs for storing intermediate data
     dcc.Store(id='store-maze'),   # Stores maze data
@@ -273,6 +316,12 @@ app.layout = html.Div([
                     id="solve-button",
                     className="btn btn-success me-2",
                     style={'marginRight': '10px', 'padding': '10px 20px', 'fontSize': '16px'}
+                ),
+                html.Button(
+                    "About This App",
+                    id='open-modal',
+                    n_clicks=0,
+                    style={'padding': '10px 20px', 'fontSize': '16px'}
                 )
             ], style={'textAlign': 'center', 'marginBottom': '20px'})  # Center buttons and add spacing
         ], style={'padding': '0 20px'}),  # Padding for controls
@@ -472,6 +521,27 @@ def update_figure(maze, points, path):
     fig = create_maze_figure(maze_np, points, path)  # Create updated figure
     logging.debug("Maze figure updated.")
     return fig
+
+# Modal callback
+@app.callback(
+    Output('modal', 'style'),
+    [Input('open-modal', 'n_clicks'),
+     Input('close-modal', 'n_clicks')],
+    [State('modal', 'style')]
+)
+def toggle_modal(n_open, n_close, modal_style):
+    ctx = dash.callback_context
+    if not ctx.triggered:
+        return modal_style
+    else:
+        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+    
+    if button_id == 'open-modal' and n_open:
+        modal_style['display'] = 'block'
+    elif button_id == 'close-modal' and n_close:
+        modal_style['display'] = 'none'
+    
+    return modal_style
 
 # Run Dash app
 if __name__ == '__main__':
