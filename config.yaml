@@ -1,23 +1,39 @@
 # Maze Solver Configuration
 
-# Figure size for matplotlib visualizations
-figure_size:
-  width: 12
-  height: 8
+# Maze Generation Settings
+maze:
+  default_width: 20
+  default_height: 20
+  default_randomness: 0.1
 
-# Colors for different algorithms
-algorithm_colors:
-  bfs: 'red'
-  dfs: 'blue'
-  astar: 'green'
-  dijkstra: 'orange'
+# Solving Algorithm Settings
+algorithms:
+  default: 'bfs'
+  available:
+    - 'bfs'
+    - 'dfs'
+    - 'astar'
+    - 'dijkstra'
 
-# Default maze dimension
-default_maze_dimension: 20
+# Visualization Settings
+visualization:
+  figure_size:
+    width: 10
+    height: 10
+  colors:
+    wall: 'black'
+    path: 'white'
+    start: 'green'
+    end: 'red'
+    solution:
+      bfs: 'blue'
+      dfs: 'purple'
+      astar: 'orange'
+      dijkstra: 'cyan'
+  animation:
+    interval: 50  # milliseconds
 
-# Default cycle probability
-default_cycle_probability: 0.1
-
-# Animation settings
-animation:
-  interval: 50  # milliseconds
+# CLI Settings
+cli:
+  description: "Maze Generation and Solving CLI"
+  epilog: "For more information, visit: https://github.com/pmarcowski/maze-solver"
