@@ -85,7 +85,7 @@ def create_maze_figure(maze, points=None, path=None):
 
 
 # Initialize Dash app
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, title='Maze solver')
 server = app.server
 
 # Define app layout
